@@ -3,28 +3,218 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SwiftDraw AI</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            font-weight: 300; /* Lighter font weight */
+        }
+
+        header p {
+            font-size: 1.2em;
+        }
+
+        .hero-section {
+            /* Removed background-image */
+            background-color: #3498db; /* Solid background as fallback */
+            height: auto; /* Adapt height to content */
+            padding: 40px 0; /* Padding for spacing */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-align: center;
+            position: relative;
+        }
+      /*  .hero-section::before { Removed overlay as there's no image } */
+
+        .hero-section h2 {
+            font-size: 2.5em;
+            z-index: 1;
+            position: relative;
+        }
+
+        section {
+            padding: 40px 0;
+        }
+
+        section h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .feature {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Center text within features */
+        }
+
+        .feature h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .feature ul {
+            list-style: none;
+            padding: 0;
+            text-align: left; /* Align list items to the left */
+        }
+
+        .feature ul li {
+            margin-bottom: 5px;
+        }
+
+        .feature ul li::before {
+            content: "• "; /* Add a bullet point */
+            color: #3498db; /* Color of the bullet point */
+            font-weight: bold;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #3498db;
+            color: #fff;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+
+            header h1 {
+                font-size: 2.5em;
+            }
+        }
+
+    </style>
+    <!-- Removed Font Awesome link -->
 </head>
 
 <body>
-    <h3>SwiftDraw AI</h3>
-    <p>Turn your creativity into captivating anime-style images using advanced AI. Whether you’re generating original
-        anime artwork or transforming your photos into anime-style images, this app makes it simple and enjoyable.</p>
+    <header>
+        <div class="container">
+            <h1>SwiftDraw AI</h1>
+            <p>Create Stunning Images with On-Device AI</p>
+        </div>
+    </header>
 
-    <p>Key Features:</p>
+    <section class="hero-section">
+        <h2>Bring Your Imagination to Life</h2>
+    </section>
 
-    <p>* High-Quality Anime Creations: Generate detailed, beautiful anime-style images effortlessly.</p>
-    <p>* Local AI Processing: All image creation happens right on your device, ensuring your privacy is protected.</p>
-    <p>* Photo-to-Anime Transformation: Convert your personal photos into unique anime artwork, perfect for avatars or
-        other uses.</p>
-    <p>* Versatile Uses: Use your generated images as avatars, social media profile pictures, or even for creative
-        projects like custom stickers or artwork.</p>
-    <p>* Easy and Intuitive: Quick generation options combined with simple controls for customized results.</p>
+    <section class="intro">
+        <div class="container">
+            <p>SwiftDraw AI is a powerful image generation app that brings your imagination to life with cutting-edge on-device AI. Whether you need wallpapers, illustrations, social media avatars, or unique artistic creations, this app makes it effortless to generate high-quality images with just a few taps.</p>
+        </div>
+    </section>
 
-    <p>Experience the magic of anime-style art creation through the power of AI!</p>
-    <address>Technical support email: width.thirds0f@icloud.com</address>
+    <section class="why-choose">
+        <div class="container">
+            <h2>Why Choose SwiftDraw AI?</h2>
+            <div class="features">
+                <div class="feature">
+                    <!-- Removed icon: <i class="fas fa-bolt"></i> -->
+                    <h3>True On-Device AI – Fast, Private, and Limitless</h3>
+                    <p>Unlike many other apps, SwiftDraw AI runs AI models directly on your device.  This means faster processing, complete privacy, offline usability, and *no* generation limits.  Create as much as you want!</p>
+                </div>
+                <div class="feature">
+                    <!-- Removed icon: <i class="fas fa-palette"></i> -->
+                    <h3>Multiple AI Models for Different Styles</h3>
+                    <ul>
+                        <li>Vibrant anime-style artwork</li>
+                        <li>Clean and minimalist anime designs</li>
+                        <li>PVC figure-like anime aesthetics</li>
+                        <li>Realistic images resembling actual photos</li>
+                    </ul>
+                    <p>Import your own AI models for fully customized results.</p>
+                </div>
+                <div class="feature">
+                    <!-- Removed icon: <i class="fas fa-expand-arrows-alt"></i> -->
+                    <h3>Flexible Aspect Ratios</h3>
+                    <p>Create images in square, portrait, and landscape formats natively – not by cropping, but by generating compositions that naturally fit.</p>
+                </div>
+                <div class="feature">
+                    <!-- Removed icon: <i class="fas fa-file-alt"></i> -->
+                    <h3>Versatile Input Options</h3>
+                    <p>Generate images from text, existing images, or a combination of both (text-to-image & image-to-image). Transform photos into anime, or anime into realistic images.</p>
+                </div>
+                <div class="feature">
+                   <!-- Removed icon: <i class="fas fa-search-plus"></i> -->
+                    <h3>AI-Powered 4x Upscaling</h3>
+                     <p>Enhance your creations with AI-based 4x super-resolution, producing crisp and highly detailed results—all processed locally for complete privacy.</p>
+                </div>
+                <div class="feature">
+                    <!-- Removed icon: <i class="fas fa-user-friendly"></i> -->
+                    <h3>User-Friendly Yet Powerful</h3>
+                    <p>Intuitive experience with three UI modes designed to balance simplicity and advanced control for both beginners and advanced users.</p>
+                </div>
+                <div class="feature">
+                    <!-- Removed icon:  <i class="fas fa-sun"></i> -->
+                    <h3>Seamless System Integration</h3>
+                    <p>Supports light and dark modes, automatically adapting to your system theme.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+     <footer>
+        <div class="container">
+            <p>Technical Support Email: <a style="color:pink" href="mailto:width.thirds0f@icloud.com">width.thirds0f@icloud.com</a></p>
+        </div>
+    </footer>
+
 </body>
 
 </html>
