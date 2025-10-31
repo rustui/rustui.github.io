@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bukai — Fast, Elegant EPUB Reader for iPhone and iPad</title>
+  <meta name="description" content="Bukai is a fast, elegant EPUB reader for iPhone and iPad with on‑device AI summaries, Read Aloud, sleep timer, and privacy‑first design.">
+  <style>
+    :root {
+      --bg: #0b0c10;
+      --card: #111218;
+      --muted: #9aa3af;
+      --text: #e9eef5;
+      --accent: #4f8cff;
+      --accent-2: #7aa2ff;
+      --ring: rgba(79, 140, 255, 0.35);
+      --ok: #2ecc71;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f7f8fb;
+        --card: #ffffff;
+        --muted: #4b5563;
+        --text: #0f172a;
+        --accent: #2563eb;
+        --accent-2: #3b82f6;
+        --ring: rgba(37, 99, 235, 0.25);
+        --ok: #16a34a;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 600px at 70% -10%, rgba(79,140,255,0.12), transparent 60%),
+                  radial-gradient(900px 500px at -10% 10%, rgba(124,58,237,0.10), transparent 55%),
+                  var(--bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 32px 20px 80px; }
+
+    header.nav {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; padding: 8px 0 16px; position: sticky; top: 0;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(to bottom, rgba(10,11,16,0.72), rgba(10,11,16,0.30), rgba(10,11,16,0));
+      z-index: 1000; /* keep above content cards */
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo {
+      width: 36px; height: 36px; border-radius: 10px; background:
+        radial-gradient(12px 12px at 30% 30%, #fff6, transparent 60%),
+        linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.06) inset;
+    }
+    .brand h1 { font-size: 18px; margin: 0; letter-spacing: 0.2px; }
+    .ghost { color: var(--muted); font-size: 13px; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 10px 16px; border-radius: 10px; color: #fff; background: var(--accent);
+      text-decoration: none; font-weight: 600; letter-spacing: 0.2px; box-shadow: 0 6px 18px var(--ring);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .btn:focus-visible { outline: none; box-shadow: 0 0 0 4px var(--ring); }
+    .btn.secondary { background: transparent; color: var(--text); border: 1px solid rgba(255,255,255,0.12); }
+
+    .hero { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center; padding: 32px 0 8px; }
+    .hero h2 { font-size: 44px; line-height: 1.15; margin: 10px 0 12px; }
+    .hero p.lead { color: var(--muted); font-size: 18px; margin: 0 0 22px; }
+    .callout { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .device {
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.06));
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 20px; height: 380px; box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+      position: relative; overflow: hidden; padding: 18px;
+      z-index: 0; /* ensure it stays below sticky header */
+    }
+    .screen {
+      height: 100%; border-radius: 14px; background: var(--card);
+      border: 1px solid rgba(255,255,255,0.06); padding: 18px; display: grid; grid-template-rows: auto 1fr auto; gap: 12px;
+    }
+    .toc { display: flex; gap: 8px; flex-wrap: wrap; }
+    .toc span { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--muted); padding: 6px 10px; border-radius: 999px; font-size: 12px; }
+    .page { background: #fff; color: #0b1220; border-radius: 10px; padding: 16px; overflow: hidden; box-shadow: 0 1px 0 rgba(0,0,0,0.05) inset; }
+    .page h3 { margin: 0 0 8px; font-size: 16px; }
+    .page p { margin: 0; color: #2b3340; font-size: 14px; }
+    .controls { display: flex; gap: 10px; justify-content: flex-end; }
+    .chip { font-size: 12px; color: var(--text); background: rgba(79,140,255,0.15); border: 1px solid rgba(79,140,255,0.35); padding: 6px 10px; border-radius: 999px; }
+
+    .section { margin-top: 56px; }
+    .section h3 { font-size: 24px; margin: 0 0 12px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 16px; }
+    .card h4 { margin: 0 0 8px; font-size: 16px; }
+    .card p { margin: 0; color: var(--muted); font-size: 14px; }
+    .check { color: var(--ok); font-weight: 700; margin-right: 6px; }
+
+    .kicker { text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted); font-weight: 700; font-size: 11px; }
+
+    .support { text-align: center; margin-top: 64px; }
+    .support a { color: var(--accent); text-decoration: none; font-weight: 600; }
+
+    footer { margin-top: 56px; color: var(--muted); font-size: 12px; text-align: center; }
+
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; }
+      .device { height: 360px; }
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 680px) {
+      .hero h2 { font-size: 34px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="nav" aria-label="Top Navigation">
+      <div class="brand">
+        <div aria-hidden="true" class="logo"></div>
+        <div>
+          <h1>Bukai</h1>
+          <div class="ghost">EPUB Reader for iPhone & iPad</div>
+        </div>
+      </div>
+      <nav aria-label="Quick actions">
+        <a class="btn secondary" href="#features">Features</a>
+        <a class="btn secondary" href="#privacy">Privacy</a>
+        <a class="btn" href="#support">Support</a>
+      </nav>
+    </header>
+
+    <section class="hero" aria-label="Hero">
+      <div>
+        <div class="kicker">Read beautifully</div>
+        <h2>Fast, elegant reading—plus on‑device AI summaries.</h2>
+        <p class="lead">Import your .epub files, enjoy clean pages, and jump between chapters with a clear table of contents. Let Bukai read aloud, summarize chapters or the whole book on your device, and always save your place.</p>
+        <div class="callout">
+          <a class="btn" href="#features" aria-label="Explore key features">Explore Features</a>
+          <a class="btn secondary" href="#privacy" aria-label="View privacy details">Privacy First</a>
+        </div>
+      </div>
+      <div class="device" aria-hidden="true">
+        <div class="screen">
+          <div class="toc">
+            <span>Cover</span><span>Chapter 1</span><span>Chapter 2</span><span>Chapter 3</span><span>Notes</span>
+          </div>
+          <div class="page">
+            <h3>Chapter 1 · Beginnings</h3>
+            <p>Text flows cleanly with crisp rendering and smooth, native pages. Swipe, tap, or jump from the table of contents—your place is saved automatically.</p>
+          </div>
+          <div class="controls">
+            <span class="chip">Read Aloud · 1x</span>
+            <span class="chip">AI Summary</span>
+            <span class="chip">Sleep · 15m</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="privacy" class="section" aria-label="Privacy">
+      <div class="kicker">Privacy First</div>
+      <h3>Your reading stays yours.</h3>
+      <div class="grid">
+        <div class="card"><h4><span class="check">•</span>On‑device AI</h4><p>Summaries are generated locally on your device—no cloud processing.</p></div>
+        <div class="card"><h4><span class="check">•</span>Your data stays local</h4><p>Your books and summaries never leave your device.</p></div>
+        <div class="card"><h4><span class="check">•</span>No accounts or ads</h4><p>No sign‑ups, tracking, or advertisements—just reading.</p></div>
+      </div>
+    </section>
+
+    <section id="features" class="section" aria-label="Key Features">
+      <div class="kicker">Key Features</div>
+      <h3>Everything you need for EPUB.</h3>
+      <div class="grid">
+        <div class="card"><h4>Easy Import</h4><p>Import .epub files with cover, title, and author.</p></div>
+        <div class="card"><h4>Clean Reading</h4><p>Distraction‑free pages with smooth, native pagination.</p></div>
+        <div class="card"><h4>Table of Contents</h4><p>Jump between chapters quickly with a clear TOC.</p></div>
+        <div class="card"><h4>Read Aloud</h4><p>Listen to a page or chapter with adjustable speech rate.</p></div>
+        <div class="card"><h4>Sleep Timer</h4><p>Set a timer for bedtime listening and drift off.</p></div>
+        <div class="card"><h4>AI Chapter Summaries</h4><p>Get concise chapter summaries on demand (on‑device).</p></div>
+        <div class="card"><h4>AI Full‑Book Summary</h4><p>Generate a combined overview for the entire book (on‑device).</p></div>
+        <div class="card"><h4>Language Options</h4><p>Auto detect or choose English for summaries.</p></div>
+        <div class="card"><h4>Progress Saving</h4><p>Your place is saved automatically—pick up where you left off.</p></div>
+        <div class="card"><h4>Offline Ready</h4><p>Works offline after setup; great for travel and commutes.</p></div>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Made for EPUB">
+      <div class="kicker">Made for EPUB</div>
+      <h3>Optimized for standard .epub files.</h3>
+      <div class="grid">
+        <div class="card"><h4>Crisp Text</h4><p>High‑quality rendering for comfortable, long reading sessions.</p></div>
+        <div class="card"><h4>Smooth Scrolling</h4><p>Seamless navigation that feels instantly responsive.</p></div>
+        <div class="card"><h4>Native Feel</h4><p>Thoughtful design tuned for iPhone and iPad.</p></div>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Why Readers Love It">
+      <div class="kicker">Why Readers Love It</div>
+      <h3>Read, listen, and study—your way.</h3>
+      <div class="grid">
+        <div class="card"><h4>Instant Start</h4><p>Start reading in seconds after import.</p></div>
+        <div class="card"><h4>Study Better</h4><p>On‑device summaries help with studying and review.</p></div>
+        <div class="card"><h4>Perfect for Commutes</h4><p>Read Aloud and a sleep timer make it great for travel and bedtime.</p></div>
+      </div>
+    </section>
+
+    <section id="support" class="support" aria-label="Support">
+      <h3>Support</h3>
+      <p>Questions or feedback? We’re here to help.</p>
+      <p><a href="mailto:width.thirds0f@icloud.com" aria-label="Email support">width.thirds0f@icloud.com</a></p>
+    </section>
+
+    <footer>
+      <p>© <span id="y"></span> Bukai. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Small quality-of-life touch: current year in footer, no external deps.
+    (function(){ try { document.getElementById('y').textContent = new Date().getFullYear(); } catch(_) {} })();
+  </script>
+</body>
+</html>
